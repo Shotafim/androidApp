@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "592788483646",
+    "firebase_url": "https://shotafim-c0263.firebaseio.com",
+    "project_id": "shotafim-c0263",
+    "storage_bucket": "shotafim-c0263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592788483646:android:4861e3cf0e698845",
+        "android_client_info": {
+          "package_name": "com.example.gal.shotafim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592788483646-q3roq68k6l5v8m9rf5k5h853qbpvangl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gal.shotafim",
+            "certificate_hash": "b402b1fc4e2d04d1392bc6aefae2c1c9934804a6"
+          }
+        },
+        {
+          "client_id": "592788483646-ktrdbn00m8g7sj4247on4noji12aqvfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCiZPFNjb0sX-fwfV_m7bX1HT2jr_9yYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592788483646-ktrdbn00m8g7sj4247on4noji12aqvfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
