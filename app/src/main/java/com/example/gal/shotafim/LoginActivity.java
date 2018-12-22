@@ -88,9 +88,10 @@ public class LoginActivity extends AppCompatActivity  {
                                 loginIsOk = true;
                             }
                         }
-                        if(loginIsOk){
+                        if(loginIsOk){ // moved to menu
                             Toast.makeText(LoginActivity.this
                                     ,"LOGIN GOOD GOOD",(Toast.LENGTH_LONG)).show();
+                            onSuccessMoveToMenu();
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Email or password is incorrect,try again!",Toast.LENGTH_LONG).show();
@@ -125,5 +126,10 @@ public class LoginActivity extends AppCompatActivity  {
      */
     private boolean HasEmptyField(){
         return (passTxtString.isEmpty() || usrNameTxtString.isEmpty());
+    }
+
+    private void onSuccessMoveToMenu(){
+        Intent menuIntent = new Intent(LoginActivity.this, MenuActivity.class);
+        startActivity(menuIntent);
     }
 }

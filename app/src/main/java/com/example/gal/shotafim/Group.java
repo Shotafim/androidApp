@@ -13,7 +13,7 @@ public class Group {
 
 
     /**
-     * @param GroupId, groupName
+     * @param
      */
 
     public Group(String groupID, String groupName, String adminUserID, int numberOfUsers, Address address) {

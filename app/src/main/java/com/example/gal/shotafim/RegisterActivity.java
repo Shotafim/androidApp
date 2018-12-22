@@ -1,5 +1,6 @@
 package com.example.gal.shotafim;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -141,10 +143,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if(dataSnapshot.exists()){
                                         Toast.makeText(RegisterActivity.this, "Group already exists", Toast.LENGTH_LONG).show();
-                                    }else { // their is no such group , we can add the user and the group to the database.
+                                    }else { // their is no such group , we can add the user and the group to the database. -> Moved to Menu
                                         db.child("Users").child(user.getEmail().replace(",","|")).setValue(user);
                                         db.child("Group").child(user.getmGroupName()).setValue(regUserGroup);
                                         Toast.makeText(RegisterActivity.this, "User Registration & Group Complete", Toast.LENGTH_LONG).show();
+                                        onSuccessMoveToMenu();
                                     }
                                 }
                                 @Override
@@ -158,9 +161,10 @@ public class RegisterActivity extends AppCompatActivity {
                             db.child("Group").child(user.getmGroupName()).addListenerForSingleValueEvent(new ValueEventListener() {
                                      @Override
                                      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                         if(dataSnapshot.exists()){
+                                         if(dataSnapshot.exists()){ // Group exist, success -> moved to Menu
                                              db.child("Users").child(user.getEmail().replace(",","|")).setValue(user);
                                              Toast.makeText(RegisterActivity.this, "You added to group: "+ user.getmGroupName(), Toast.LENGTH_LONG).show();
+                                             onSuccessMoveToMenu();
                                          }else{
                                              Toast.makeText(RegisterActivity.this, "Their is no such group: "+ user.getmGroupName(), Toast.LENGTH_LONG).show();
                                          }
@@ -184,6 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         }
+
     }
 
     /**
@@ -207,6 +212,11 @@ public class RegisterActivity extends AppCompatActivity {
                      emailTxt.getText().toString().isEmpty() ||
                      passTxt.getText().toString().isEmpty());
          }
+    }
+
+    private void onSuccessMoveToMenu(){
+        Intent menuIntent = new Intent(RegisterActivity.this, MenuActivity.class);
+        startActivity(menuIntent);
     }
 
 }
