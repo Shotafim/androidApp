@@ -1,4 +1,4 @@
-package com.example.gal.shotafim.WorkingClasses;
+package com.example.gal.shotafim;
 
 public class Address {
     private String country;

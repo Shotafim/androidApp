@@ -1,4 +1,4 @@
-package com.example.gal.shotafim.WorkingClasses;
+package com.example.gal.shotafim;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

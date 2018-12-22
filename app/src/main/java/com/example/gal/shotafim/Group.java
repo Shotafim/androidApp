@@ -1,6 +1,4 @@
-package com.example.gal.shotafim.WorkingClasses;
-
-import com.example.gal.shotafim.WorkingClasses.Address;
+package com.example.gal.shotafim;
 
 import java.util.Date;
 

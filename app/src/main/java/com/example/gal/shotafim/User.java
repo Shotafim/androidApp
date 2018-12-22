@@ -1,6 +1,4 @@
-package com.example.gal.shotafim.WorkingClasses;
-
-import com.example.gal.shotafim.WorkingClasses.Payment;
+package com.example.gal.shotafim;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
