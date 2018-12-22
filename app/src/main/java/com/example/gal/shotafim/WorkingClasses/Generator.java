@@ -1,4 +1,4 @@
-package com.example.gal.shotafim;
+package com.example.gal.shotafim.WorkingClasses;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
@@ -9,7 +9,7 @@ public final class Generator
 
     public static String nextSessionId()
     {
-        return new BigInteger(130, random).toString(32);
+        return new BigInteger(32, random).toString(32);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.gal.shotafim;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.gal.shotafim.WorkingClasses.Address;
+import com.example.gal.shotafim.WorkingClasses.Generator;
+import com.example.gal.shotafim.WorkingClasses.Group;
+import com.example.gal.shotafim.WorkingClasses.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

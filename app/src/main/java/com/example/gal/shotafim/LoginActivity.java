@@ -2,15 +2,14 @@ package com.example.gal.shotafim;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.gal.shotafim.WorkingClasses.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,18 +78,18 @@ public class LoginActivity extends AppCompatActivity  {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         boolean loginIsOk = false;
-                        User user;
+                        User user=null;
                         if(dataSnapshot.exists()){
                             user = (User)dataSnapshot.getValue(User.class);
-                            Log.d("Motek",""+dataSnapshot.getValue().toString());
                             if(passTxtString.toString().equals(user.getPassword())){
-                                Log.d("Motek","Third");
                                 loginIsOk = true;
                             }
                         }
                         if(loginIsOk){
+                            AuthenticatedUserHolder.instance.setAppUser(user);
                             Toast.makeText(LoginActivity.this
                                     ,"LOGIN GOOD GOOD",(Toast.LENGTH_LONG)).show();
+                            startActivity(new Intent("com.example.gal.shotafim.PaymentActivity"));
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Email or password is incorrect,try again!",Toast.LENGTH_LONG).show();

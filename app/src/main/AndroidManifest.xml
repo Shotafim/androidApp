@@ -19,6 +19,22 @@
         <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="com.example.gal.shotafim.RegisterActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PaymentActivity" >
+
+            <intent-filter>
+                <action android:name="com.example.gal.shotafim.PaymentActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TransferActivity">
+            <intent-filter>
+                <action android:name="com.example.gal.shotafim.TransferActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
