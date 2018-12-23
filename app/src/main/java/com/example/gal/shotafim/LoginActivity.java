@@ -1,12 +1,15 @@
 package com.example.gal.shotafim;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity  {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
 
         signInBtn=findViewById(R.id.signInBtn);
@@ -61,6 +65,7 @@ public class LoginActivity extends AppCompatActivity  {
         usrNameTxtString = usrNameTxt.getText().toString();
         passTxtString = passTxt.getText().toString();
 
+
         //On Click sign in Button
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +76,10 @@ public class LoginActivity extends AppCompatActivity  {
                 mAuth = FirebaseAuth.getInstance();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myRef = database.getReference();
-
+                ValidateEmail();
                 myRef.child("Users").child(usrNameTxtString.replace(".","|").toLowerCase()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                         boolean loginIsOk = false;
                         User user=null;
                         if(dataSnapshot.exists()){
@@ -83,15 +87,20 @@ public class LoginActivity extends AppCompatActivity  {
                             if(passTxtString.toString().equals(user.getPassword())){
                                 loginIsOk = true;
                             }
+                            else {
+                                passTxt.setError("Password wrong,try again");
+                            }
                         }
                         if(loginIsOk){
                             AuthenticatedUserHolder.instance.setAppUser(user);
                             Toast.makeText(LoginActivity.this
-                                    ,"LOGIN GOOD GOOD",(Toast.LENGTH_LONG)).show();
+                                    ,"Welcome Back "+user.getName(),(Toast.LENGTH_LONG)).show();
                             startActivity(new Intent("com.example.gal.shotafim.PaymentActivity"));
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Email or password is incorrect,try again!",Toast.LENGTH_LONG).show();
+                            passTxt.setError("Wrong password ,try again");
+                            usrNameTxt.setError("Wrong email ,try again");
                         }
 
                     }
@@ -101,6 +110,7 @@ public class LoginActivity extends AppCompatActivity  {
 
                     }
                 });
+
             }
         });
         //On click sign up button
@@ -123,5 +133,30 @@ public class LoginActivity extends AppCompatActivity  {
      */
     private boolean HasEmptyField(){
         return (passTxtString.isEmpty() || usrNameTxtString.isEmpty());
+    }
+    private void ValidateEmail(){
+        if(!usrNameTxtString.contains("@") || usrNameTxt.length()<=5){
+            usrNameTxt.setError("Invalid email!");
+        }
+    }
+    /*
+    This method is for create popup windows after press login.
+     */
+    private void ShowAuthencating(){
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // On complete call either onSignupSuccess or onSignupFailed
+                        // depending on success
+//                                        onSignupSuccess();
+                        // onSignupFailed();
+                        progressDialog.dismiss();
+                    }
+                }, 2000);
     }
 }

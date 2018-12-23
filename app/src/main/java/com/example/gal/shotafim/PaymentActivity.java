@@ -66,7 +66,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 //Enter Transfer to DB
                                 TransRef.child("Payments").child(Generator.nextSessionId()).setValue(p);
                                 //Make Toast
-                                Toast.makeText(PaymentActivity.this,"Transfer Success!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(PaymentActivity.this,"Payment Success!",Toast.LENGTH_LONG).show();
                             }
                             else{
                                 Toast.makeText(PaymentActivity.this,"Something went wrong,try again!",Toast.LENGTH_LONG).show();

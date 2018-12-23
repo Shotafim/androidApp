@@ -1,8 +1,10 @@
 package com.example.gal.shotafim;
 
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +59,6 @@ public class TransferActivity extends AppCompatActivity {
                     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference TransRef = database.child("Transcation").child(user.getmGroupName());
 
-
                     final DatabaseReference usersRef = database.child("Users").child(sendToTxt.getText().toString().replace(".","|").toLowerCase());
                     //Update credit in receiver
                     usersRef.child("credit").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,7 +88,10 @@ public class TransferActivity extends AppCompatActivity {
 
                         }
                     });
+
                 }
+
+
             }
         });
     }
