@@ -27,4 +27,17 @@ public class SettingLib  {
     static final String TRANSFER_STR = "TRANSFER";
     static final String PAYMENT_STR = "PAYMENT";
 
+
+    /**
+     * Firebase
+     * */
+    // Their is a typo in Firebase name branch. should be Transaction not Transcation.
+    static final String TRANSACTION_BRANCH = "Transcation";
+
+    /**
+     *  User Info
+     * */
+    static String mAuthUserName;
+    public static void setmAuthUserName(String name){ mAuthUserName = name;}
+    public static String getmAuthUserName(){return mAuthUserName;}
 }

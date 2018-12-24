@@ -5,8 +5,7 @@ import java.util.Date;
 public class Transaction {
 
 
-    private final int TRANSFER = 0;
-    private final int PAYMENT = 1;
+
 
     private String mSender;
     private String mReceiver;
@@ -15,41 +14,48 @@ public class Transaction {
 
     private String mType;
 
-    private Date mDate;
 
 
-    public Transaction(int Type, String sender, String receiver, double amount){
-        if(Type == TRANSFER){
-            mSender = sender;
-            mReceiver = receiver;
-            mAmount = amount;
-            mType = SettingLib.TRANSFER_STR;
-        }
-        else if(Type == PAYMENT){
-            mSender = sender;
-            mReceiver = receiver;
-            mType = SettingLib.PAYMENT_STR;
-            mAmount = amount;
-        }
+    public Transaction(){
+    }
 
-        mDate = new Date();
+    // type - {Transfer, Payment}
+    public Transaction(String type, String sender, String receiver, double amount){
+        mSender = sender;
+        mReceiver = receiver;
+        mAmount = amount;
+        mType = type;
     }
 
     public String getmSender() {
         return mSender;
     }
 
+    public void setmSender(String mSender) {
+        this.mSender = mSender;
+    }
+
     public String getmReceiver() {
         return mReceiver;
+    }
+
+    public void setmReceiver(String mReceiver) {
+        this.mReceiver = mReceiver;
     }
 
     public double getmAmount() {
         return mAmount;
     }
 
+    public void setmAmount(double mAmount) {
+        this.mAmount = mAmount;
+    }
+
     public String getmType() {
         return mType;
     }
 
-    public Date getmDate(){ return mDate;}
+    public void setmType(String mType) {
+        this.mType = mType;
+    }
 }
