@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <TextView
+    android:id="@+id/textView3"
+    android:layout_width="140dp"
+    android:layout_height="25dp"
+    android:text="Enter Payment"
+    android:textSize="18sp"
+        android:layout_marginBottom="24dp"
+    android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/amountLbl"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Amount:"
+        android:padding="5dp"
+        android:layout_below="@id/textView3"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/amountTxt"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:hint="Amount"
+        android:layout_toRightOf="@id/amountLbl"
+        android:layout_below="@id/textView3"
+        android:inputType="numberDecimal"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/noteLbl"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Note:"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:layout_below="@id/amountTxt"/>
+
+    <EditText
+        android:id="@+id/noteTxt"
+        android:layout_width="170dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:hint="Note"
+        android:inputType="textPersonName"
+        android:layout_below="@id/amountTxt"
+        android:layout_toRightOf="@id/noteLbl"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/paymentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Payment"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/noteTxt"
+        android:layout_marginTop="24dp"
+        />
+
+
+
+</RelativeLayout>
