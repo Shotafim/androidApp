@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,6 +27,7 @@
         android:layout_below="@id/imageView2"
         android:ems="10"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="76dp"
         android:hint="Email"
         android:inputType="textPersonName"
         android:shadowColor="@color/darkgrey"
@@ -33,6 +36,7 @@
         android:textColorHint="@color/darkgrey"
         android:textColorLink="@color/darkgrey"
         app:backgroundTint="@color/darkgrey"/>
+
     <EditText
         android:id="@+id/passTxt"
         android:layout_width="wrap_content"
@@ -47,6 +51,7 @@
         android:textColorHint="@color/darkgrey"
         app:backgroundTint="@color/darkgrey" />
 
+
     <Button
         android:id="@+id/signInBtn"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -60,6 +65,7 @@
         android:textColor="@android:color/white"
         android:textColorLink="@color/darkgrey"
         android:textSize="18sp" />
+
 
     <Button
         android:id="@+id/signUpLoginBtn"
@@ -76,3 +82,4 @@
 
 
 </RelativeLayout>
+
