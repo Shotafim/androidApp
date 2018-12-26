@@ -35,11 +35,11 @@ public class TransferActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transfer);
 
 
-        sendToTxt = findViewById(R.id.sendToTxt);
+//        sendToTxt = findViewById(R.id.sendToTxt);
         amountTxt = findViewById(R.id.amountTxt);
         noteTxt = findViewById(R.id.noteTxt);
 
-        transferBtn = findViewById(R.id.transferBtn);
+//        transferBtn = findViewById(R.id.transferBtn);
         transferBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +55,7 @@ public class TransferActivity extends AppCompatActivity {
                       user.Transfer(sendToTxt.getText().toString(),amountTxt.getText().toString(),noteTxt.getText().toString());
                     */
 
-                    final Transfer t = new Transfer(amountTxt.getText().toString(),noteTxt.getText().toString(),user.getEmail(),sendToTxt.getText().toString());
+                    final Transaction t = new Transaction();
                     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference TransRef = database.child("Transcation").child(user.getmGroupName());
 

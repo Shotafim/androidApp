@@ -4,18 +4,65 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public abstract class Transaction {
+public class Transaction {
 
-    private String Date;
-    private double Amount;
-    private String Note;
 
-    public Transaction(String amount, String note) {
-        Date = createDate();
-        Amount = Double.parseDouble(amount);
-        Note = note;
+
+
+    private String mSender;
+    private String mReceiver;
+
+    private double mAmount;
+
+    private String mType;
+
+    private String mDate;
+
+
+
+
+    public Transaction(){
     }
-    public Transaction(){}
+
+    // type - {Transfer, Payment}
+    public Transaction(String type, String sender, String receiver, double amount){
+        mSender = sender;
+        mReceiver = receiver;
+        mAmount = amount;
+        mType = type;
+    }
+
+    public String getmSender() {
+        return mSender;
+    }
+
+    public void setmSender(String mSender) {
+        this.mSender = mSender;
+    }
+
+    public String getmReceiver() {
+        return mReceiver;
+    }
+
+    public void setmReceiver(String mReceiver) {
+        this.mReceiver = mReceiver;
+    }
+
+    public double getmAmount() {
+        return mAmount;
+    }
+
+    public void setmAmount(double mAmount) {
+        this.mAmount = mAmount;
+    }
+
+    public String getmType() {
+        return mType;
+    }
+
+    public void setmType(String mType) {
+        this.mType = mType;
+    }
 
     private String createDate() {
         java.util.Date d = new Date();
@@ -23,36 +70,12 @@ public abstract class Transaction {
         ft.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         return ft.format(d);
     }
-    public String getDate() {
-        return Date;
+
+    public String getmDate() {
+        return mDate;
     }
 
-    public void setDate(String date) {
-        Date = date;
-    }
-
-    public double getAmount() {
-        return Amount;
-    }
-
-    public void setAmount(String amount) {
-        Amount = Double.parseDouble(amount);
-    }
-
-    public String getNote() {
-        return Note;
-    }
-
-    public void setNote(String note) {
-        Note = note;
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "Date='" + Date + '\'' +
-                ", Amount=" + Amount +
-                ", Note='" + Note + '\'' +
-                '}';
+    public void setmDate(String mDate) {
+        this.mDate = mDate;
     }
 }

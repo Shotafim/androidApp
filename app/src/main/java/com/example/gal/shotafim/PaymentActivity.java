@@ -3,6 +3,8 @@ package com.example.gal.shotafim;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,10 +28,24 @@ public class PaymentActivity extends AppCompatActivity {
     private EditText noteTxt;
     //Button
     private Button paymentBtn;
+
+    //list
+    ArrayList<SearchBarItem> searchItem_list;
+
+    //AutoCompleteView
+    private AppCompatAutoCompleteTextView autoComplete_View;
+    private AutocompleteItemAdapter autocomplete_adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        autoComplete_View = findViewById(R.id.autoComplete_field);
+        searchItem_list = SettingLib.getSearchBarAutoCompleteItems();
+        Log.v("LOG#1", searchItem_list.get(0).getmName());
+
 
 
         amountTxt = findViewById(R.id.amountTxt);
@@ -38,13 +55,17 @@ public class PaymentActivity extends AppCompatActivity {
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                searchItem_list = SettingLib.getSearchBarAutoCompleteItems();
+
+
                 if(HasEmptyField()) {
                     Toast.makeText(PaymentActivity.this,"There is empty field,try again!",Toast.LENGTH_LONG).show();
                 }
                 else{
                     User user = AuthenticatedUserHolder.instance.getAppUser();
 
-                    final Payment p = new Payment(amountTxt.getText().toString(),noteTxt.getText().toString());
+                    final Transaction p = new Transaction();
                     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference TransRef = database.child("Transcation").child(user.getmGroupName());
 
@@ -81,6 +102,10 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             }
         });
+
+        autocomplete_adapter = new AutocompleteItemAdapter(this, searchItem_list);
+        autoComplete_View.setThreshold(1);
+        autoComplete_View.setAdapter(autocomplete_adapter);
     }
     /**
      * Check if all field is filled.

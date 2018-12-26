@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity  {
                             AuthenticatedUserHolder.instance.setAppUser(user);
                             Toast.makeText(LoginActivity.this
                                     ,"Welcome Back "+user.getName(),(Toast.LENGTH_LONG)).show();
-                            startActivity(new Intent("com.example.gal.shotafim.PaymentActivity"));
+                            startActivity(new Intent("com.example.gal.shotafim.MenuActivity"));
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Email or password is incorrect,try again!",Toast.LENGTH_LONG).show();

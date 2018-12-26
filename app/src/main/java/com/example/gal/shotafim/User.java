@@ -43,9 +43,7 @@ public class User {
         ft.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         return ft.format(d);
     }
-    public void Pay(Payment p){
 
-    }
     /*
         Getters & setters.
      */
