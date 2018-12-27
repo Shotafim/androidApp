@@ -30,6 +30,7 @@ public class Transaction {
         mReceiver = receiver;
         mAmount = amount;
         mType = type;
+        mDate = createDate();
     }
 
     public String getmSender() {
@@ -66,7 +67,7 @@ public class Transaction {
 
     private String createDate() {
         java.util.Date d = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("E dd.mm.yyy HH:mm:ss");
+        SimpleDateFormat ft = new SimpleDateFormat("E dd/MM/YYYY HH:mm:ss");
         ft.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         return ft.format(d);
     }

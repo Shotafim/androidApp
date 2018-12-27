@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -23,8 +24,8 @@ import java.util.ArrayList;
 public class GroupHistoryActivity extends AppCompatActivity {
     private DatabaseReference initGroup;
     private DatabaseReference mDatabaseRef;
-    private DatabaseReference mGroupPayments;
-    private DatabaseReference mGroupTransfers;
+    private DatabaseReference mGroupTransactions;
+
 
 
     @Override
@@ -33,7 +34,7 @@ public class GroupHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.list_deal);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mGroupPayments = mDatabaseRef.child("Transaction").child("group113"); // TODO: Set the reference to users-Group
+        mGroupTransactions = mDatabaseRef.child(SettingLib.FB_TRANSACTION).child(AuthenticatedUserHolder.instance.getAppUser().getmGroupName());
 
         final ArrayList<Transaction> transactions = new ArrayList<>();
 
@@ -41,8 +42,11 @@ public class GroupHistoryActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.list);
         listView.setAdapter(adapter);
 
+//        DEBUG_SET_DATA_TO_FIREBASE();
 
-        mGroupPayments.addChildEventListener(new ChildEventListener() {
+
+
+        mGroupTransactions.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -87,47 +91,24 @@ public class GroupHistoryActivity extends AppCompatActivity {
     /**
      *  DEBUG
      * */
-    private ArrayList<Transaction> DEBUG_LISTVIEW_ADAPTER(ArrayList<Transaction> transactions){
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.PAYMENT, "usr1", "TV", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr2", "usr1", 3332));
-//        transactions.add(new Transaction(SettingLib.TRANSFER, "usr1", "usr2", 33));
-        return transactions;
-    }
+
 
     private void DEBUG_SET_DATA_TO_FIREBASE(){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mGroupPayments = mDatabaseRef.child("Transaction").child("group113");
+        mGroupTransactions = mDatabaseRef.child("Transaction").child("group113");
 
         final Transaction t1 = new Transaction(SettingLib.TRANSFER_STR, "tommy", "harry", 220);
         final Transaction t2 = new Transaction(SettingLib.TRANSFER_STR, "garry", "harry", 20);
         final Transaction t3 = new Transaction(SettingLib.TRANSFER_STR, "harry", "tommy", 10);
         final Transaction t4 = new Transaction(SettingLib.TRANSFER_STR, "snow", "timka", 19);
 
-        mGroupPayments.addListenerForSingleValueEvent(new ValueEventListener() {
+        mGroupTransactions.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mGroupPayments.child("Payments").child(Generator.nextSessionId()).setValue(t1);
-                mGroupPayments.child("Payments").child(Generator.nextSessionId()).setValue(t2);
-                mGroupPayments.child("Payments").child(Generator.nextSessionId()).setValue(t3);
-                mGroupPayments.child("Payments").child(Generator.nextSessionId()).setValue(t4);
+                mGroupTransactions.child("Payments").child(Generator.nextSessionId()).setValue(t1);
+                mGroupTransactions.child("Payments").child(Generator.nextSessionId()).setValue(t2);
+                mGroupTransactions.child("Payments").child(Generator.nextSessionId()).setValue(t3);
+                mGroupTransactions.child("Payments").child(Generator.nextSessionId()).setValue(t4);
             }
 
             @Override
@@ -138,12 +119,30 @@ public class GroupHistoryActivity extends AppCompatActivity {
 
     }
 
+    private void DEBUG_SET_TRANSFER_TO_FIREBASE(){
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mGroupTransactions = mDatabaseRef.child("Transaction").child("group113");
 
+        final Transaction t1 = new Transaction(SettingLib.PAYMENT_STR, "tommy", "harry", 220);
+        final Transaction t2 = new Transaction(SettingLib.PAYMENT_STR, "garry", "harry", 20);
+        final Transaction t3 = new Transaction(SettingLib.PAYMENT_STR, "harry", "tommy", 10);
+        final Transaction t4 = new Transaction(SettingLib.PAYMENT_STR, "snow", "timka", 19);
 
-//                        Log.v("Transaction## :", userSnapshot.toString() + "\n");
-//                    Transaction transaction = new Transaction(SettingLib.PAYMENT,
-//                            userSnapshot.getKey("senderID"),
-//                            userSnapshot.getValue("receiverID"),
-//                            Double.parseDouble(userSnapshot.getValue("amount")));
+        mGroupTransactions.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mGroupTransactions.child("Transfers").child(Generator.nextSessionId()).setValue(t1);
+                mGroupTransactions.child("Transfers").child(Generator.nextSessionId()).setValue(t2);
+                mGroupTransactions.child("Transfers").child(Generator.nextSessionId()).setValue(t3);
+                mGroupTransactions.child("Transfers").child(Generator.nextSessionId()).setValue(t4);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
 }

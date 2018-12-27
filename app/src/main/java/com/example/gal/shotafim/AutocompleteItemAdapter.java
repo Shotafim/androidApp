@@ -1,9 +1,9 @@
 package com.example.gal.shotafim;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,114 +13,111 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AutocompleteItemAdapter extends ArrayAdapter<SearchBarItem> {
 
-    public AutocompleteItemAdapter(Context context,  ArrayList<SearchBarItem> items) {
-        super(context, 0,items);
+    private List<SearchBarItem> dataList;
+    private Context mContext;
+    private int itemLayout;
+
+    private ListFilter listFilter = new ListFilter();
+    private List<SearchBarItem> dataListAllItems;
+
+    public AutocompleteItemAdapter(Context context, int resource, List<SearchBarItem> storeDataLst) {
+        super(context, resource, storeDataLst);
+        dataList = storeDataLst;
+        mContext = context;
+        itemLayout = resource;
     }
+
+
+    @Override
+    public View getView(int position, View view, @NonNull ViewGroup parent) {
+
+        if (view == null) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(itemLayout, parent, false);
+        }
+
+        TextView strName = (TextView) view.findViewById(R.id.nameItem_autocomplete);
+        strName.setText(getItem(position).getmName());
+
+        ImageView imageView = view.findViewById(R.id.image_item_autocomplete);
+        imageView.setImageResource(getItem(position).getmImage());
+
+
+        return view;
+    }
+
+    @Override
+    public int getCount() {
+        return dataList.size();
+    }
+
+    @Override
+    public SearchBarItem getItem(int position) {
+        Log.d("CustomListAdapter", ""+dataList.get(position));
+        return dataList.get(position);
+    }
+
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//        return super.getView(position, convertView, parent);
-
-        View listItemView = convertView;
-
-        if (convertView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_autocomplete, parent, false);
-        }
-
-        SearchBarItem item = getItem(position);
-        ImageView image_item = listItemView.findViewById(R.id.image_item_autocomplete);
-        TextView text_item = listItemView.findViewById(R.id.nameItem_autocomplete);
-
-        image_item.setImageResource(item.getmImage());
-        text_item.setText(item.getmName());
-
-        return listItemView;
-
+    public Filter getFilter() {
+        return listFilter;
     }
 
-    private Filter categories = new Filter(){
+    public class ListFilter extends Filter {
+        private Object lock = new Object();
+
         @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
+        protected FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
-        }
+            if (dataListAllItems == null) {
+                synchronized (lock) {
+                    dataListAllItems = new ArrayList<SearchBarItem>(dataList);
+                }
+            }
 
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if (prefix == null || prefix.length() == 0) {
+                synchronized (lock) {
+                    results.values = dataListAllItems;
+                    results.count = dataListAllItems.size();
+                }
+            } else {
+                final String searchStrLowerCase = prefix.toString().toLowerCase();
 
-        }
-    }
+                ArrayList<SearchBarItem> matchValues = new ArrayList<SearchBarItem>();
 
-//    @Nullable
-//    @Override
-//    public SearchBarItem getItem(int position) {
-//        return super.getItem(position);
-//    }
-
-    //    @Nullable
-//    @Override
-//    public Fruit getItem(int position) {
-//        return items.get(position);
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return items.size();
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public Filter getFilter() {
-//        return fruitFilter;
-//    }
-//
-    private Filter fruitFilter = new Filter() {
-        @Override
-        public CharSequence convertResultToString(Object resultValue) {
-            SearchBarItem item = (SearchBarItem) resultValue;
-            return item.getmName();
-        }
-
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            if (charSequence != null) {
-                suggestions.clear();
-                for (Fruit fruit : tempItems) {
-                    if (fruit.getName().toLowerCase().startsWith(charSequence.toString().toLowerCase())) {
-                        suggestions.add(fruit);
+                for (SearchBarItem dataItem : dataListAllItems) {
+                    if (dataItem.getmName().toLowerCase().startsWith(searchStrLowerCase)) {
+                        matchValues.add(dataItem);
                     }
                 }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = suggestions;
-                filterResults.count = suggestions.size();
-                return filterResults;
-            } else {
-                return new FilterResults();
+
+                results.values = matchValues;
+                results.count = matchValues.size();
             }
+
+            return results;
         }
 
         @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            ArrayList<Fruit> tempValues = (ArrayList<Fruit>) filterResults.values;
-            if (filterResults != null && filterResults.count > 0) {
-                clear();
-                for (Fruit fruitObj : tempValues) {
-                    add(fruitObj);
-                    notifyDataSetChanged();
-                }
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.values != null) {
+                dataList = (ArrayList<SearchBarItem>)results.values;
             } else {
-                clear();
+                dataList = null;
+            }
+            if (results.count > 0) {
                 notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
             }
         }
-    };
-//}
+
+    }
+
 }

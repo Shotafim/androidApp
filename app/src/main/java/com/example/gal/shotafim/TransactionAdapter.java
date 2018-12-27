@@ -31,11 +31,13 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView receiverTxt = listItemView.findViewById(R.id.receiver);
         TextView dealTypeTxt = listItemView.findViewById(R.id.deal_type);
         TextView amountTxt = listItemView.findViewById(R.id.deal_amount);
+        TextView dealDateTxt = listItemView.findViewById(R.id.deal_date);
 
         userInitiatorTxt.setText(currentTransaction.getmSender());
         receiverTxt.setText(currentTransaction.getmReceiver());
         dealTypeTxt.setText(currentTransaction.getmType());
         amountTxt.setText(Double.toString(currentTransaction.getmAmount()));
+        dealDateTxt.setText(currentTransaction.getmDate());
 
 
         return listItemView;

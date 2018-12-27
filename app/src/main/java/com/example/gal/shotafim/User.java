@@ -39,7 +39,7 @@ public class User {
      */
     private String createDate() {
         Date d = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("E dd.mm.yyy HH:mm:ss");
+        SimpleDateFormat ft = new SimpleDateFormat("E dd/MM/YYYY HH:mm:ss");
         ft.setTimeZone(TimeZone.getTimeZone("GMT+2"));
         return ft.format(d);
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -43,8 +45,16 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
 
         autoComplete_View = findViewById(R.id.autoComplete_field);
-        searchItem_list = SettingLib.getSearchBarAutoCompleteItems();
-        Log.v("LOG#1", searchItem_list.get(0).getmName());
+        searchItem_list = new ArrayList<>();
+        searchItem_list.add(new SearchBarItem("TV",SettingLib.icon_list_tv ,false));
+        searchItem_list.add(new SearchBarItem("Internet",SettingLib.icon_list_internet ,false));
+        searchItem_list.add(new SearchBarItem("Electricity",SettingLib.icon_list_electricity ,false));
+        searchItem_list.add(new SearchBarItem("Water",SettingLib.icon_list_water ,false));
+        searchItem_list.add(new SearchBarItem("Arnona",SettingLib.icon_list_arnona ,false));
+
+
+
+
 
 
 
@@ -56,7 +66,6 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                searchItem_list = SettingLib.getSearchBarAutoCompleteItems();
 
 
                 if(HasEmptyField()) {
@@ -103,8 +112,9 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
 
-        autocomplete_adapter = new AutocompleteItemAdapter(this, searchItem_list);
+        autocomplete_adapter = new AutocompleteItemAdapter(this,R.layout.list_item_autocomplete, searchItem_list);
         autoComplete_View.setThreshold(1);
+        autoComplete_View.setOnItemClickListener(onItemClickListener);
         autoComplete_View.setAdapter(autocomplete_adapter);
     }
     /**
@@ -115,4 +125,17 @@ public class PaymentActivity extends AppCompatActivity {
         return (amountTxt.getText().toString().isEmpty() ||
                 noteTxt.getText().toString().isEmpty());
     }
+
+    private AdapterView.OnItemClickListener onItemClickListener =
+            new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Toast.makeText(PaymentActivity.this,
+                            "Clicked item from auto completion list "
+                                    +( (SearchBarItem)adapterView.getItemAtPosition(i)).getmName()
+                            , Toast.LENGTH_SHORT).show();
+                    autoComplete_View.setText(( (SearchBarItem)adapterView.getItemAtPosition(i)).getmName());
+                }
+            };
 }
