@@ -106,4 +106,8 @@ public class User {
                 ", Credit=" + Credit +
                 '}';
     }
+
+    public void setmGroupName(String mGroupName) {
+        this.mGroupName = mGroupName;
+    }
 }

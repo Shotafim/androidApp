@@ -20,7 +20,7 @@
             tools:context=".RegisterActivity">
 
             <EditText
-                android:id="@+id/nameTxt"
+                android:id="@+id/nameTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -29,14 +29,14 @@
                 android:ems="10"
                 android:hint="Username"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/emailTxt"
+                app:layout_constraintBottom_toTopOf="@+id/emailTxt_Reg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="spread" />
 
             <EditText
-                android:id="@+id/emailTxt"
+                android:id="@+id/emailTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -45,14 +45,14 @@
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/passTxt"
+                app:layout_constraintBottom_toTopOf="@+id/passTxt_Reg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/nameTxt_Reg" />
 
             <EditText
-                android:id="@+id/passTxt"
+                android:id="@+id/passTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -64,7 +64,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/radioGroup"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/emailTxt_Reg" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -76,9 +76,9 @@
                     android:layout_height="64dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="15dp"
-                    app:layout_constraintBottom_toTopOf="@+id/signUpLoginBtn"
+                    app:layout_constraintBottom_toTopOf="@+id/signUpLoginBtn_Login"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/passTxt">
+                    app:layout_constraintTop_toBottomOf="@+id/passTxt_Reg">
 
                     <RadioButton
                         android:id="@+id/radioButtonCreate"
@@ -89,25 +89,24 @@
 
                     <RadioButton
                         android:id="@+id/radioButtonHas"
-                        android:layout_width="148dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Has an apt" />
                 </RadioGroup>
 
                 <EditText
-                    android:id="@+id/aptIDTxt"
+                    android:id="@+id/aptIDTxt_Reg"
                     android:layout_width="155dp"
                     android:layout_height="55dp"
                     android:layout_toRightOf="@id/radioGroup"
                     android:hint="Apt ID"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName" />
             </RelativeLayout>
 
 
-
             <EditText
-                android:id="@+id/aptTxt"
+                android:id="@+id/aptTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -116,16 +115,15 @@
                 android:ems="10"
                 android:hint="Apt"
                 android:inputType="textPersonName"
-                android:text="Apt"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/cityTxt"
+                app:layout_constraintBottom_toTopOf="@+id/cityTxt_Reg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
             <EditText
-                android:id="@+id/cityTxt"
+                android:id="@+id/cityTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -134,16 +132,15 @@
                 android:ems="10"
                 android:hint="City"
                 android:inputType="textPersonName"
-                android:text="City"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/streetTxt"
+                app:layout_constraintBottom_toTopOf="@+id/streetTxt_Reg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/aptTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/aptTxt_Reg" />
 
             <EditText
-                android:id="@+id/streetTxt"
+                android:id="@+id/streetTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -152,16 +149,15 @@
                 android:ems="10"
                 android:hint="Street"
                 android:inputType="textPersonName"
-                android:text="Street"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/countryTxt"
+                app:layout_constraintBottom_toTopOf="@+id/countryTxt_Reg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cityTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/cityTxt_Reg" />
 
             <EditText
-                android:id="@+id/countryTxt"
+                android:id="@+id/countryTxt_Reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -170,22 +166,26 @@
                 android:ems="10"
                 android:hint="Country"
                 android:inputType="textPersonName"
-                android:text="Country"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/signUpLoginBtn"
+                app:layout_constraintBottom_toTopOf="@+id/signUpLoginBtn_Login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/streetTxt" />
+                app:layout_constraintTop_toBottomOf="@+id/streetTxt_Reg" />
 
             <Button
-                android:id="@+id/signUpBtn"
-                android:layout_width="127dp"
-                android:layout_height="45dp"
-                android:layout_alignParentBottom="true"
+                android:id="@+id/signUpBtn_Reg"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="177dp"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_toEndOf="@+id/main_linearForm"
-                android:text="Sign up" />
+                android:layout_gravity="center"
+                android:layout_toEndOf="@+id/countryTxt_Reg"
+                android:background="@color/colorAccent"
+                android:text="Sign Up"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
 
         </LinearLayout>

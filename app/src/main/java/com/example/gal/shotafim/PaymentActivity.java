@@ -34,7 +34,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     //AutoCompleteView
     private AppCompatAutoCompleteTextView autoComplete_View;
-    private AutocompleteItemAdapter autocomplete_adapter;
+//    private AutocompleteItemAdapter autocomplete_adapter;
 
 
     @Override
@@ -103,9 +103,9 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
 
-        autocomplete_adapter = new AutocompleteItemAdapter(this, searchItem_list);
-        autoComplete_View.setThreshold(1);
-        autoComplete_View.setAdapter(autocomplete_adapter);
+//        autocomplete_adapter = new AutocompleteItemAdapter(this, searchItem_list);
+//        autoComplete_View.setThreshold(1);
+//        autoComplete_View.setAdapter(autocomplete_adapter);
     }
     /**
      * Check if all field is filled.
