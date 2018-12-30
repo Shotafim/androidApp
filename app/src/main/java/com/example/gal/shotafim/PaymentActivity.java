@@ -33,10 +33,14 @@ public class PaymentActivity extends AppCompatActivity {
 
     //list
     ArrayList<SearchBarItem> searchItem_list;
+    ArrayList<User> usersFBGroup;
 
     //AutoCompleteView
     private AppCompatAutoCompleteTextView autoComplete_View;
     private AutocompleteItemAdapter autocomplete_adapter;
+
+    //searchbar item
+    private SearchBarItem search_item;
 
 
     @Override
@@ -51,12 +55,12 @@ public class PaymentActivity extends AppCompatActivity {
         searchItem_list.add(new SearchBarItem("Electricity",SettingLib.icon_list_electricity ,false));
         searchItem_list.add(new SearchBarItem("Water",SettingLib.icon_list_water ,false));
         searchItem_list.add(new SearchBarItem("Arnona",SettingLib.icon_list_arnona ,false));
+        usersFBGroup = GroupHolder.getGroupMembers();
+        Log.v("Log###1", "users: "+ usersFBGroup.toString());
 
-
-
-
-
-
+        for(User user : usersFBGroup){
+            searchItem_list.add(new SearchBarItem(user.getEmail(), SettingLib.person_icn_btn, true));
+        }
 
         amountTxt = findViewById(R.id.amountTxt);
         noteTxt = findViewById(R.id.noteTxt);
@@ -65,18 +69,19 @@ public class PaymentActivity extends AppCompatActivity {
         paymentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 if(HasEmptyField()) {
                     Toast.makeText(PaymentActivity.this,"There is empty field,try again!",Toast.LENGTH_LONG).show();
                 }
-                else{
-                    User user = AuthenticatedUserHolder.instance.getAppUser();
 
-                    final Transaction p = new Transaction();
+                else{
+
+                    User user = AuthenticatedUserHolder.instance.getAppUser();
+                    String mtype = getTypeFromSearchItem(search_item);
+                    double mamount = Double.parseDouble(amountTxt.getText().toString());
+                    final Transaction p = new Transaction(mtype, user.getEmail(),search_item.getmName(),mamount);
+
                     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    final DatabaseReference TransRef = database.child("Transcation").child(user.getmGroupName());
+                    final DatabaseReference TransRef = database.child(SettingLib.FB_TRANSACTION).child(user.getmGroupName());
 
 
                     final DatabaseReference usersRef = database.child("Users").child(user.getEmail().toLowerCase());
@@ -90,7 +95,12 @@ public class PaymentActivity extends AppCompatActivity {
                                 oldAmount = dataSnapshot.getValue().toString();
                                 Map<String,Object> newCredit = new HashMap<>();
                                 //Add the old amount and the credit that sent to this user
-                                newCredit.put("credit",Double.parseDouble(oldAmount)+Double.parseDouble(amountTxt.getText().toString()));
+                                if(search_item.ismIsUser()){// if it user select - then its Transfer
+                                    newCredit.put("credit",Double.parseDouble(oldAmount)-Double.parseDouble(amountTxt.getText().toString()));
+                                }
+                                else{ // its Payment
+                                    newCredit.put("credit",Double.parseDouble(oldAmount)+Double.parseDouble(amountTxt.getText().toString()));
+                                }
                                 //Enter To DB
                                 usersRef.updateChildren(newCredit);
                                 //Enter Transfer to DB
@@ -126,11 +136,18 @@ public class PaymentActivity extends AppCompatActivity {
                 noteTxt.getText().toString().isEmpty());
     }
 
+    private String getTypeFromSearchItem(SearchBarItem item){
+        if(item.ismIsUser()){
+            return SettingLib.TRANSFER_STR;
+        }
+        return SettingLib.PAYMENT_STR;
+    }
+
     private AdapterView.OnItemClickListener onItemClickListener =
             new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                    search_item = (SearchBarItem)adapterView.getItemAtPosition(i);
                     Toast.makeText(PaymentActivity.this,
                             "Clicked item from auto completion list "
                                     +( (SearchBarItem)adapterView.getItemAtPosition(i)).getmName()

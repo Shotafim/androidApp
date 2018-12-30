@@ -11,6 +11,9 @@ public class MenuActivity extends AppCompatActivity {
     private ImageButton groupHistoryBtn;
     private ImageButton transactionBtn;
 
+    //temp flag // TODO: Make the initGroupMembers each x time - to check if someone left the group or joined.
+    private boolean checkOnlyOnce = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +22,13 @@ public class MenuActivity extends AppCompatActivity {
         personalAreaBtn = findViewById(R.id.personal_area_imgBtn);
         groupHistoryBtn = findViewById(R.id.group_history_imgBtn);
         transactionBtn = findViewById(R.id.new_transaction_imgBtn);
+
+
+        //init Group members
+        if(checkOnlyOnce){
+            GroupHolder.initGroupMembers();
+            checkOnlyOnce = false;
+        }
 
 
 

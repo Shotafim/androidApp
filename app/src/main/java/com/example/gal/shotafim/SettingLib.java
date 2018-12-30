@@ -38,8 +38,7 @@ public class SettingLib {
     static final int PAYMENT = 1;
     static final String TRANSFER_STR = "TRANSFER";
     static final String PAYMENT_STR = "PAYMENT";
-    static final String FB_TRANSACTION = "Transaction";
-    static final String FB_PAYMENTS = "Payments";
+
 
 
 
@@ -49,7 +48,8 @@ public class SettingLib {
      * Firebase
      * */
     // Their is a typo in Firebase name branch. should be Transaction not Transcation.
-    static final String TRANSACTION_BRANCH = "Transcation";
+    static final String FB_TRANSACTION = "Transaction";  //
+    static final String FB_PAYMENTS = "Payments";
 
     /**
      *  User Info

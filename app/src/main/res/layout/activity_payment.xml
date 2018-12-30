@@ -29,7 +29,7 @@
       android:id="@+id/autoComplete_field"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:hint="You want pay to/for ..."
+      android:hint="Choice Tv/Arnona/Elec/Internet/User"
       android:layout_marginBottom="24dp"
       android:completionThreshold="1"
       android:layout_below="@id/textView3"/>
