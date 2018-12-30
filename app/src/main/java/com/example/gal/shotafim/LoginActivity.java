@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity  {
                         }
                         if(loginIsOk){
                             AuthenticatedUserHolder.instance.setAppUser(user);
+                            setGroupHolderCard(user);
                             Toast.makeText(LoginActivity.this
                                     ,"Welcome Back "+user.getName(),(Toast.LENGTH_LONG)).show();
                             startActivity(new Intent("com.example.gal.shotafim.MenuActivity"));
@@ -158,5 +159,21 @@ public class LoginActivity extends AppCompatActivity  {
                         progressDialog.dismiss();
                     }
                 }, 2000);
+    }
+
+    private void setGroupHolderCard(User user){
+        DatabaseReference fb = FirebaseDatabase.getInstance().getReference();
+        fb.child("Group").child(user.getmGroupName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Group group = dataSnapshot.getValue(Group.class);
+                GroupHolder.instance.setAppGroup(group);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

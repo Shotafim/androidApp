@@ -35,8 +35,8 @@ public class MenuActivity extends AppCompatActivity {
         personalAreaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //testing - deleting data
-//                SettingLib.DELETE_FIREBASE_CHILD_DATA("Transaction/group113");
+              Intent personal_area_activity = new Intent(MenuActivity.this, PersonalAreaActivity.class);
+              startActivity(personal_area_activity);
             }
         });
 

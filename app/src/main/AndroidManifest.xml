@@ -23,8 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".PaymentActivity" >
-
+        <activity android:name=".PaymentActivity">
             <intent-filter>
                 <action android:name="com.example.gal.shotafim.PaymentActivity" />
 
@@ -39,12 +38,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupHistoryActivity">
-        <intent-filter>
-            <action android:name="com.example.gal.shotafim.GroupHistoryActivity" />
+            <intent-filter>
+                <action android:name="com.example.gal.shotafim.GroupHistoryActivity" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PersonalAreaActivity"></activity>
     </application>
 
 </manifest>

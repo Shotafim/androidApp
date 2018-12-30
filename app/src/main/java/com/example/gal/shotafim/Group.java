@@ -25,6 +25,9 @@ public class Group {
         this.date = new Date();
 
     }
+
+    public Group(){}
+
     public Date getDate() {
         return date;
     }
