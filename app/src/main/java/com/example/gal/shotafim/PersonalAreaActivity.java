@@ -94,15 +94,19 @@ public class PersonalAreaActivity extends AppCompatActivity {
         invite_btn.setVisibility(View.VISIBLE);
     }
     private void sendInviteEmail(){
-        String message=
-         "Hi,\n"+AuthenticatedUserHolder.instance.getAppUser().getName()+""
-                +" invite you to Shotafim. \n Download Shotafim app in this Link: \n <LINK> \n "+
-                "Your group ID is : "+AuthenticatedUserHolder.instance.getAppUser().getmGroupName()+"\nWaiting for you!";
+        if(invite_editTxt.getText().toString().isEmpty() || !invite_editTxt.getText().toString().contains("@")){
+            invite_editTxt.setError("Must enter valid email");
+        }else {
+            String message =
+                    "Hi,\n" + AuthenticatedUserHolder.instance.getAppUser().getName() + ""
+                            + " invite you to Shotafim. \n Download Shotafim app in this Link: \n <LINK> \n " +
+                            "Your group ID is : " + AuthenticatedUserHolder.instance.getAppUser().getmGroupName() + "\nWaiting for you!";
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto",invite_editTxt.getText().toString(), null));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Shotafim Invitation");
-        intent.putExtra(Intent.EXTRA_TEXT, message);
-        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", invite_editTxt.getText().toString(), null));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Shotafim Invitation");
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+            startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+        }
     }
 }
