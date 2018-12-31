@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Shotafim</string>
+    <string name="dialog_message">Are you sure you want to logout?</string>
 </resources>

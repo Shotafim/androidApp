@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -67,23 +68,29 @@ public class PersonalAreaActivity extends AppCompatActivity {
         });
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        usersNames.clear();
+        users.clear();
+    }
     private ArrayList<String> getUsersNames(){
         ArrayList<String> tmp = new ArrayList<>();
         for(User user : users){
-            tmp.add(user.getEmail());
+            //Only if it doesn't exist already.
+            if(!tmp.contains(user.getEmail()))
+                tmp.add(user.getEmail());
         }
         return tmp;
     }
 
     private void visibilityForAdmin(){
-        if(personalName.getText().toString().compareTo(groupAdminName.getText().toString()) == 0){
+        if(isAdmin()){
             showForAdmin();
         }else {
             showForRegularUsr();
         }
     }
-
     private void showForRegularUsr() {
         invite_editTxt.setVisibility(View.INVISIBLE);
         invite_btn.setVisibility(View.INVISIBLE);
@@ -92,6 +99,9 @@ public class PersonalAreaActivity extends AppCompatActivity {
     private void showForAdmin() {
         invite_editTxt.setVisibility(View.VISIBLE);
         invite_btn.setVisibility(View.VISIBLE);
+    }
+    private boolean isAdmin(){
+        return AuthenticatedUserHolder.instance.getAppUser().getName().equals(GroupHolder.instance.getAppGroup().getAdminUserID());
     }
     private void sendInviteEmail(){
         if(invite_editTxt.getText().toString().isEmpty() || !invite_editTxt.getText().toString().contains("@")){
@@ -109,4 +119,6 @@ public class PersonalAreaActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(intent, "Choose an Email client :"));
         }
     }
+
 }
+
