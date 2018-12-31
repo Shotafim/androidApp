@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.LongFunction;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -42,6 +43,10 @@ public class PaymentActivity extends AppCompatActivity {
     //searchbar item
     private SearchBarItem search_item;
 
+    //user that will get transfer
+    private User sendUser = null;
+    //
+    final private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +77,21 @@ public class PaymentActivity extends AppCompatActivity {
                 if(HasEmptyField()) {
                     Toast.makeText(PaymentActivity.this,"There is empty field,try again!",Toast.LENGTH_LONG).show();
                 }
-
                 else{
-
                     User user = AuthenticatedUserHolder.instance.getAppUser();
                     String mtype = getTypeFromSearchItem(search_item);
                     double mamount = Double.parseDouble(amountTxt.getText().toString());
+
+                    //Create transaction object with the sender details.
                     final Transaction p = new Transaction(mtype, user.getEmail(),search_item.getmName(),mamount);
-
-                    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference TransRef = database.child(SettingLib.FB_TRANSACTION).child(user.getmGroupName());
-
-
                     final DatabaseReference usersRef = database.child("Users").child(user.getEmail().toLowerCase());
+
+
                     //Update credit in receiver
                     usersRef.child("credit").addListenerForSingleValueEvent(new ValueEventListener() {
                         public String oldAmount;
+                        public String oldAmount_sendUser;
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()){
@@ -96,15 +100,22 @@ public class PaymentActivity extends AppCompatActivity {
                                 Map<String,Object> newCredit = new HashMap<>();
                                 //Add the old amount and the credit that sent to this user
                                 if(search_item.ismIsUser()){// if it user select - then its Transfer
-                                    newCredit.put("credit",Double.parseDouble(oldAmount)-Double.parseDouble(amountTxt.getText().toString()));
+                                    newCredit.put("credit",Double.parseDouble(oldAmount)+Double.parseDouble(amountTxt.getText().toString()));
+                                    usersRef.updateChildren(newCredit);
+                                    TransRef.child("Transfers").child(Generator.nextSessionId()).setValue(p);//Enter Transfer to DB
+                                    /**
+                                     *  Change receiver user credit
+                                     *  First iteration: A.credit = 60 , b.credit = 0
+                                     *  Second iteration: A.credit = 40 , b.credit = 20;
+                                     */
+                                    changeReceiverCredit();
                                 }
                                 else{ // its Payment
                                     newCredit.put("credit",Double.parseDouble(oldAmount)+Double.parseDouble(amountTxt.getText().toString()));
+                                    usersRef.updateChildren(newCredit);
+                                    //Enter Transfer to DB
+                                    TransRef.child("Payments").child(Generator.nextSessionId()).setValue(p);
                                 }
-                                //Enter To DB
-                                usersRef.updateChildren(newCredit);
-                                //Enter Transfer to DB
-                                TransRef.child("Payments").child(Generator.nextSessionId()).setValue(p);
                                 //Make Toast
                                 Toast.makeText(PaymentActivity.this,"Payment Success!",Toast.LENGTH_LONG).show();
                             }
@@ -142,7 +153,26 @@ public class PaymentActivity extends AppCompatActivity {
         }
         return SettingLib.PAYMENT_STR;
     }
+    private void changeReceiverCredit(){
+        final DatabaseReference usersRef = database.child("Users").child(search_item.getmName());
+        usersRef.child("credit").addListenerForSingleValueEvent(new ValueEventListener() {
+            public double oldAmount_recieverUser;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                if(dataSnapshot.exists()){
+                    oldAmount_recieverUser = dataSnapshot.getValue(Double.class);
+                    Map<String,Object> newCredit = new HashMap<>();
+                    newCredit.put("credit",oldAmount_recieverUser-Double.parseDouble(amountTxt.getText().toString()));
+                    usersRef.updateChildren(newCredit);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private AdapterView.OnItemClickListener onItemClickListener =
             new AdapterView.OnItemClickListener(){
                 @Override

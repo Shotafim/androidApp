@@ -1,6 +1,8 @@
 package com.example.gal.shotafim;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Group {
 
@@ -8,12 +10,12 @@ public class Group {
     private String groupName;
     private String adminUserID;
     private int numberOfUsers;
-    private Date date;
+    private String date;
     private Address address;
 
 
     /**
-     * @param GroupId, groupName
+     * @param groupID, groupName
      */
 
     public Group(String groupID, String groupName, String adminUserID, int numberOfUsers, Address address) {
@@ -22,13 +24,20 @@ public class Group {
         this.adminUserID = adminUserID;//Need to be the creator of the group
         this.numberOfUsers = numberOfUsers; // Need to be at least 2 at most 6
         this.address = address;
-        this.date = new Date();
+        this.date = createDate();
 
+    }
+
+    private String createDate() {
+        Date d = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("E dd/MM/YYYY HH:mm:ss");
+        ft.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+        return ft.format(d);
     }
 
     public Group(){}
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
