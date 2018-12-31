@@ -1,5 +1,7 @@
 package com.example.gal.shotafim;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,9 +55,16 @@ public class PersonalAreaActivity extends AppCompatActivity {
         users = GroupHolder.getGroupMembers();
         usersNames = getUsersNames();
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,android.R.id.text1, usersNames);
         listOfUsers.setAdapter(adapter);
+
+        //Invite//
+        invite_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendInviteEmail();
+            }
+        });
 
     }
 
@@ -83,5 +92,17 @@ public class PersonalAreaActivity extends AppCompatActivity {
     private void showForAdmin() {
         invite_editTxt.setVisibility(View.VISIBLE);
         invite_btn.setVisibility(View.VISIBLE);
+    }
+    private void sendInviteEmail(){
+        String message=
+         "Hi,\n"+AuthenticatedUserHolder.instance.getAppUser().getName()+""
+                +" invite you to Shotafim. \n Download Shotafim app in this Link: \n <LINK> \n "+
+                "Your group ID is : "+AuthenticatedUserHolder.instance.getAppUser().getmGroupName()+"\nWaiting for you!";
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto",invite_editTxt.getText().toString(), null));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Shotafim Invitation");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 }
