@@ -10,41 +10,55 @@
         android:id="@+id/usr_initiator"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
-        android:layout_marginRight="16dp"
-        android:textStyle="bold"
-        android:text="Mark"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:text="Mark"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/deal_type"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="2dp"
         android:layout_marginRight="16dp"
         android:layout_toRightOf="@id/usr_initiator"
-        android:text="Transfer"/>
+        android:text="Transfer" />
 
     <TextView
         android:id="@+id/receiver"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="0dp"
         android:layout_marginRight="16dp"
         android:layout_toRightOf="@id/deal_type"
-        android:textStyle="bold"
-        android:text="to Gal"/>
+        android:text="to Gal"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/deal_amount"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:textStyle="bold"
-        android:text="100 shekel"/>
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="87dp"
+        android:text="100 shekel"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/deal_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/deal_amount"
-        android:layout_marginRight="10dp"/>
-
-
+        android:layout_width="66dp"
+        android:textSize="11dp"
+        android:layout_height="44dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="-60dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_toRightOf="@id/deal_amount" />
 
 
 </RelativeLayout>

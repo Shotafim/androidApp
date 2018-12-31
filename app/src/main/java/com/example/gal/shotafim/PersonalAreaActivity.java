@@ -64,7 +64,6 @@ public class PersonalAreaActivity extends AppCompatActivity {
         for(User user : users){
             tmp.add(user.getEmail());
         }
-
         return tmp;
     }
 
