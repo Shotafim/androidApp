@@ -69,12 +69,6 @@ public class PersonalAreaActivity extends AppCompatActivity {
         });
         //Invite Button//
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        usersNames.clear();
-        users.clear();
-    }
     private ArrayList<String> getUsersNames(){
         ArrayList<String> tmp = new ArrayList<>();
         for(User user : users){
