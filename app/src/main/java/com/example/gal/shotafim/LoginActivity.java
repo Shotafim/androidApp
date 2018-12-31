@@ -31,22 +31,6 @@ public class LoginActivity extends AppCompatActivity  {
     private String passTxtString;
 
     private DatabaseReference mDatabase;
-//
-//    ValueEventListener db_event_listener = new ValueEventListener() {
-//        @Override
-//        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//        }
-//
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//        }
-//    };
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

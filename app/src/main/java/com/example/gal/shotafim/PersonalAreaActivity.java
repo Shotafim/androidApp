@@ -35,6 +35,7 @@ public class PersonalAreaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_area);
+        getSupportActionBar().setTitle(R.string.Personal_area);
 
         personalName = findViewById(R.id.usr_name_dynamic);
         groupName = findViewById(R.id.group_name_dynamic);
@@ -59,14 +60,14 @@ public class PersonalAreaActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,android.R.id.text1, usersNames);
         listOfUsers.setAdapter(adapter);
 
-        //Invite//
+        //Invite Button//
         invite_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendInviteEmail();
             }
         });
-
+        //Invite Button//
     }
     @Override
     protected void onDestroy() {

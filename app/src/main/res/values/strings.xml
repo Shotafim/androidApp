@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Shotafim</string>
     <string name="dialog_message">Are you sure you want to logout?</string>
+    <string name="Personal_area">Personal Area</string>
+    <string name="Transaction">Transaction</string>
+    <string name="History">History</string>
+
 </resources>

@@ -30,7 +30,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
         personalAreaBtn = findViewById(R.id.personal_area_imgBtn);
         groupHistoryBtn = findViewById(R.id.group_history_imgBtn);
         transactionBtn = findViewById(R.id.new_transaction_imgBtn);
