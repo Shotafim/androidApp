@@ -15,26 +15,17 @@ public class User {
     private String Date;
     private double Credit;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, String mGroupName) {
         this.userID = UUID.randomUUID().toString();
         Name = name;
         Email = email.replace(".","|").toLowerCase();
         Password = password;
+       this.mGroupName = mGroupName;
         Date = createDate();
         Credit = 0;
     }
-    public User(String userID, String name, String email, String password, String groupName) {
-        this.userID = userID;
-        Name = name;
-        Email = email.replace(".","|").toLowerCase();
-        mGroupName = groupName;
-        Password = password;
-        Date = createDate();
-        Credit = 0;
 
-    }
-    public User (){
-    }
+    public User (){ }
     /*
         Methods.
      */
