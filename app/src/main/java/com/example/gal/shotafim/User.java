@@ -3,6 +3,7 @@ package com.example.gal.shotafim;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class User {
 
@@ -14,8 +15,8 @@ public class User {
     private String Date;
     private double Credit;
 
-    public User(String userID, String name, String email, String password) {
-        this.userID = userID;
+    public User(String name, String email, String password) {
+        this.userID = UUID.randomUUID().toString();
         Name = name;
         Email = email.replace(".","|").toLowerCase();
         Password = password;
