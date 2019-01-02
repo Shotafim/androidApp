@@ -103,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
 
        // Sets the user data by the clicked RadioBtn
         final User user = new User(
-                Generator.nextSessionId(),
                 nameTxt.getText().toString(),
                 emailTxt.getText().toString(),
                 passTxt.getText().toString(),
