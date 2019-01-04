@@ -1,7 +1,15 @@
 package com.example.gal.shotafim;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,10 +47,16 @@ public class RegisterActivity extends AppCompatActivity {
     private RadioButton hasAptRadio;
     private RadioButton createAptRadio;
     private RadioGroup radioGroup;
-    
+
     private Group regUserGroup;
     private Address address;
     private User user;
+
+    //Geolocation
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private TextView geoText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +73,22 @@ public class RegisterActivity extends AppCompatActivity {
         cityTxt = findViewById(R.id.cityTxt);
         streetTxt = findViewById(R.id.streetTxt);
         countryTxt = findViewById(R.id.countryTxt);
-        hasAptRadio =findViewById(R.id.radioButtonHas);
+        hasAptRadio = findViewById(R.id.radioButtonHas);
         createAptRadio = findViewById(R.id.radioButtonCreate);
         signUpBtn = findViewById(R.id.signUpBtn);
+
+        geoText = findViewById(R.id.geoTextView);
 
         radioGroup = findViewById(R.id.radioGroup);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if( radioGroup.getCheckedRadioButtonId()==hasAptRadio.getId() ){
+                if (radioGroup.getCheckedRadioButtonId() == hasAptRadio.getId()) {
                     createAptInvisiable();
-                }
-                else{
+                } else {
                     int _id = new Random().nextInt(9000) + 1000;
-                    aptIDTxt.setText(""+_id);
+                    aptIDTxt.setText("" + _id);
                     createAptVisiable();
                 }
             }
@@ -83,8 +99,14 @@ public class RegisterActivity extends AppCompatActivity {
                 OnClickSignUp();
             }
         });
+
+        //Geo
+       setup_geo_coordinates();
+
+
     }
-    private void createAptVisiable(){
+
+    private void createAptVisiable() {
         aptTxt.setVisibility(View.VISIBLE);
         cityTxt.setVisibility(View.VISIBLE);
         streetTxt.setVisibility(View.VISIBLE);
@@ -92,23 +114,25 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-    private void createAptInvisiable(){
+
+    private void createAptInvisiable() {
         aptTxt.setVisibility(View.INVISIBLE);
         cityTxt.setVisibility(View.INVISIBLE);
         streetTxt.setVisibility(View.INVISIBLE);
         countryTxt.setVisibility(View.INVISIBLE);
     }
-    public void OnClickSignUp(){
+
+    public void OnClickSignUp() {
         final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-       // Sets the user data by the clicked RadioBtn
+        // Sets the user data by the clicked RadioBtn
         final User user = new User(
                 nameTxt.getText().toString(),
                 emailTxt.getText().toString(),
                 passTxt.getText().toString(),
                 aptIDTxt.getText().toString());
 
-        Log.v("USER DATA : ###" , user.toString());
+        Log.v("USER DATA : ###", user.toString());
 
 
         address = new Address(countryTxt.getText().toString(),
@@ -116,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                 aptTxt.getText().toString(),
                 streetTxt.getText().toString());
 
-        if(createAptRadio.isChecked()){
+        if (createAptRadio.isChecked()) {
             regUserGroup = new Group(Generator.nextSessionId(),
                     aptIDTxt.getText().toString(),
                     user.getName(),
@@ -125,66 +149,62 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-
-
-        if(HasEmptyFields() || (radioGroup.getCheckedRadioButtonId() == -1)) {
+        if (HasEmptyFields() || (radioGroup.getCheckedRadioButtonId() == -1)) {
             Log.v("REGISTER:::", "RADIO ID IN IF: " + radioGroup.getCheckedRadioButtonId());
             Log.v("REGISTER:::", "RADIO hasAPT: " + hasAptRadio.getId());
             Log.v("REGISTER:::", "RADIO createAPT: " + createAptRadio.getId());
-            Toast.makeText(RegisterActivity.this,"There is empty field,try again!",Toast.LENGTH_LONG).show();
-        }
-        else{
-            db.child("Users").child(user.getEmail().replace(".","|").toLowerCase()).addListenerForSingleValueEvent(new ValueEventListener() {
+            Toast.makeText(RegisterActivity.this, "There is empty field,try again!", Toast.LENGTH_LONG).show();
+        } else {
+            db.child("Users").child(user.getEmail().replace(".", "|").toLowerCase()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
+                    if (dataSnapshot.exists()) {
                         Toast.makeText(RegisterActivity.this, "Email already registered ", Toast.LENGTH_LONG).show();
-                    }
-                    else{ // User dont exist in the system, adding new user to db.
-                        if(createAptRadio.isChecked()){
+                    } else { // User dont exist in the system, adding new user to db.
+                        if (createAptRadio.isChecked()) {
                             //looking if the group is already exist.
                             db.child("Group").child(regUserGroup.getGroupName()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.exists()){
+                                    if (dataSnapshot.exists()) {
                                         Toast.makeText(RegisterActivity.this, "Group already exists", Toast.LENGTH_LONG).show();
-                                    }else { // their is no such group , we can add the user and the group to the database.
-                                        db.child("Users").child(user.getEmail().replace(",","|")).setValue(user);
+                                    } else { // their is no such group , we can add the user and the group to the database.
+                                        db.child("Users").child(user.getEmail().replace(",", "|")).setValue(user);
                                         db.child("Group").child(user.getmGroupName()).setValue(regUserGroup);
                                         Toast.makeText(RegisterActivity.this, "User Registration & Group Complete", Toast.LENGTH_LONG).show();
                                         Intent s = new Intent(getApplicationContext(), LoginActivity.class);
                                         startActivity(s);
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                 }
                             });
-                        }
-
-                        else { // hasAptBtn checked
+                        } else { // hasAptBtn checked
                             db.child("Group").child(user.getmGroupName()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                     @Override
-                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                         if(dataSnapshot.exists()){
-                                             db.child("Users").child(user.getEmail().replace(",","|")).setValue(user);
-                                             Toast.makeText(RegisterActivity.this, "You added to group: "+ user.getmGroupName(), Toast.LENGTH_LONG).show();
-                                         }else{
-                                             Toast.makeText(RegisterActivity.this, "Their is no such group: "+ user.getmGroupName(), Toast.LENGTH_LONG).show();
-                                         }
-                                     }
+                                                                                                             @Override
+                                                                                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                                                                 if (dataSnapshot.exists()) {
+                                                                                                                     db.child("Users").child(user.getEmail().replace(",", "|")).setValue(user);
+                                                                                                                     Toast.makeText(RegisterActivity.this, "You added to group: " + user.getmGroupName(), Toast.LENGTH_LONG).show();
+                                                                                                                 } else {
+                                                                                                                     Toast.makeText(RegisterActivity.this, "Their is no such group: " + user.getmGroupName(), Toast.LENGTH_LONG).show();
+                                                                                                                 }
+                                                                                                             }
 
-                                     @Override
-                                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                                                                             @Override
+                                                                                                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                     }
-                                 }
+                                                                                                             }
+                                                                                                         }
                             );
                         }
 
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -199,23 +219,77 @@ public class RegisterActivity extends AppCompatActivity {
      *  Check if all field is filled.
      * @return True / False , True if there is empty field ,False otherwise.
      */
-    private boolean HasEmptyFields(){
-         if(radioGroup.getCheckedRadioButtonId() == hasAptRadio.getId()){
-             return (aptIDTxt.getText().toString().isEmpty() ||
-                     nameTxt.getText().toString().isEmpty() ||
-                     emailTxt.getText().toString().isEmpty() ||
-                     passTxt.getText().toString().isEmpty());
-         }
-         else{
-             return (
-                     aptTxt.getText().toString().isEmpty() ||
-                     streetTxt.getText().toString().isEmpty() ||
-                     countryTxt.getText().toString().isEmpty() ||
-                     cityTxt.getText().toString().isEmpty() ||
-                     nameTxt.getText().toString().isEmpty() ||
-                     emailTxt.getText().toString().isEmpty() ||
-                     passTxt.getText().toString().isEmpty());
-         }
+    private boolean HasEmptyFields() {
+        if (radioGroup.getCheckedRadioButtonId() == hasAptRadio.getId()) {
+            return (aptIDTxt.getText().toString().isEmpty() ||
+                    nameTxt.getText().toString().isEmpty() ||
+                    emailTxt.getText().toString().isEmpty() ||
+                    passTxt.getText().toString().isEmpty());
+        } else {
+            return (
+                    aptTxt.getText().toString().isEmpty() ||
+                            streetTxt.getText().toString().isEmpty() ||
+                            countryTxt.getText().toString().isEmpty() ||
+                            cityTxt.getText().toString().isEmpty() ||
+                            nameTxt.getText().toString().isEmpty() ||
+                            emailTxt.getText().toString().isEmpty() ||
+                            passTxt.getText().toString().isEmpty());
+        }
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 10:
+                configure();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void configure(){
+        // first check for permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+    }
+
+    private void setup_geo_coordinates(){
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                geoText.setText("\n" + location.getLongitude() + " " + location.getLatitude());
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+
+        configure();
+    }
+
+
 
 }

@@ -19,6 +19,15 @@
             android:orientation="vertical"
             tools:context=".RegisterActivity">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/geoTextView"
+                android:hint="Geolocation cordinates"
+                android:gravity="center"/>
+
+
+
             <EditText
                 android:id="@+id/nameTxt"
                 android:layout_width="wrap_content"
