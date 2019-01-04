@@ -3,6 +3,7 @@ package com.example.gal.shotafim;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,6 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
@@ -56,6 +60,12 @@ public class RegisterActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private TextView geoText;
+    private double location_lat;
+    private double location_lng;
+
+    //DEBUG
+    private double DEBUG_LAT_TLV = 32.120397;
+    private double DEBUG_LNG_TLV =32.120397;
 
 
     @Override
@@ -87,9 +97,15 @@ public class RegisterActivity extends AppCompatActivity {
                 if (radioGroup.getCheckedRadioButtonId() == hasAptRadio.getId()) {
                     createAptInvisiable();
                 } else {
+                    //Geo setup
+                    setup_geo_coordinates();
+
+                    createAptVisiable();
+
                     int _id = new Random().nextInt(9000) + 1000;
                     aptIDTxt.setText("" + _id);
-                    createAptVisiable();
+                    set_address_fields_by_geo(location_lat,location_lng);
+
                 }
             }
         });
@@ -103,6 +119,30 @@ public class RegisterActivity extends AppCompatActivity {
         //Geo
        setup_geo_coordinates();
 
+
+
+
+    }
+
+    private void set_address_fields_by_geo(double lat, double lng){
+
+        Geocoder gcd = new Geocoder(this, Locale.getDefault());
+        List<android.location.Address> addresses = null;
+        try {
+            addresses = gcd.getFromLocation(lat, lng, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses.size() > 0) {
+            Log.d("Coordinates: ",""+addresses.get(0).getLocality() +" " +addresses.get(0).getCountryName()  +" " +addresses.get(0).getThoroughfare()); // Debug log
+            cityTxt.setText(addresses.get(0).getLocality());
+            countryTxt.setText(addresses.get(0).getCountryName());
+            streetTxt.setText(addresses.get(0).getThoroughfare());
+
+        }
+        else {
+            // do your stuff
+        }
 
     }
 
@@ -268,6 +308,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
                 geoText.setText("\n" + location.getLongitude() + " " + location.getLatitude());
+                location_lat = location.getLatitude();
+                location_lng = location.getLongitude();
             }
 
             @Override
