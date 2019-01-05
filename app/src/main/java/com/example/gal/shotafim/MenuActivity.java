@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MenuActivity extends AppCompatActivity {
     private ImageButton personalAreaBtn;
@@ -30,6 +31,9 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Toast.makeText(MenuActivity.this
+                ,"Welcome Back "+AuthenticatedUserHolder.instance.getAppUser().getName(),(Toast.LENGTH_LONG)).show();
         personalAreaBtn = findViewById(R.id.personal_area_imgBtn);
         groupHistoryBtn = findViewById(R.id.group_history_imgBtn);
         transactionBtn = findViewById(R.id.new_transaction_imgBtn);

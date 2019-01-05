@@ -1,6 +1,7 @@
 package com.example.gal.shotafim;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
@@ -32,6 +33,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -211,9 +214,24 @@ public class RegisterActivity extends AppCompatActivity {
                                     } else { // their is no such group , we can add the user and the group to the database.
                                         db.child("Users").child(user.getEmail().replace(",", "|")).setValue(user);
                                         db.child("Group").child(user.getmGroupName()).setValue(regUserGroup);
-                                        Toast.makeText(RegisterActivity.this, "User Registration & Group Complete", Toast.LENGTH_LONG).show();
-                                        Intent s = new Intent(getApplicationContext(), LoginActivity.class);
-                                        startActivity(s);
+                                        ShowRegister();
+                                        final Timer t = new Timer();
+                                        t.schedule(new TimerTask() {
+                                            public void run() {
+                                                // when the task active then close the dialog
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        Toast.makeText(getApplicationContext(), "User Registration & Group Complete", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+                                                Intent s = new Intent(getApplicationContext(), LoginActivity.class);
+                                                startActivity(s);
+                                                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+                                            }
+                                        }, 3000);
+
+
                                     }
                                 }
 
@@ -228,7 +246,23 @@ public class RegisterActivity extends AppCompatActivity {
                                                                                                              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                                                                                  if (dataSnapshot.exists()) {
                                                                                                                      db.child("Users").child(user.getEmail().replace(",", "|")).setValue(user);
-                                                                                                                     Toast.makeText(RegisterActivity.this, "You added to group: " + user.getmGroupName(), Toast.LENGTH_LONG).show();
+                                                                                                                     ShowRegister();
+                                                                                                                     final Timer t = new Timer();
+                                                                                                                     t.schedule(new TimerTask() {
+                                                                                                                         public void run() {
+                                                                                                                             // when the task active then close the dialog
+                                                                                                                             runOnUiThread(new Runnable() {
+                                                                                                                                 public void run() {
+                                                                                                                                     Toast.makeText(RegisterActivity.this, "You added to group: " + user.getmGroupName(), Toast.LENGTH_LONG).show();
+                                                                                                                                 }
+                                                                                                                             });
+
+                                                                                                                             Intent s = new Intent(getApplicationContext(), LoginActivity.class);
+                                                                                                                             startActivity(s);
+                                                                                                                             t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+                                                                                                                         }
+                                                                                                                     }, 3000);
+
                                                                                                                  } else {
                                                                                                                      Toast.makeText(RegisterActivity.this, "Their is no such group: " + user.getmGroupName(), Toast.LENGTH_LONG).show();
                                                                                                                  }
@@ -331,7 +365,24 @@ public class RegisterActivity extends AppCompatActivity {
 
         configure();
     }
+    /*
+        This method is for create popup windows after press login.
+         */
+    private void ShowRegister(){
+        ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
+        dialog.setTitle("Register");
+        dialog.setMessage("Sign up . . .");
+        dialog.setCancelable(false);
+        dialog.show();
 
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                dialog.dismiss(); // when the task active then close the dialog
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 2500); // after 5 second (or 5000 milliseconds), the task will be active.
+    }
 
 
 }

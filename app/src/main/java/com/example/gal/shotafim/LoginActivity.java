@@ -1,15 +1,14 @@
 package com.example.gal.shotafim;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LoginActivity extends AppCompatActivity  {
     //Buttons
@@ -78,9 +80,16 @@ public class LoginActivity extends AppCompatActivity  {
                         if(loginIsOk){
                             AuthenticatedUserHolder.instance.setAppUser(user);
                             setGroupHolderCard(user);
-                            Toast.makeText(LoginActivity.this
-                                    ,"Welcome Back "+user.getName(),(Toast.LENGTH_LONG)).show();
-                            startActivity(new Intent("com.example.gal.shotafim.MenuActivity"));
+
+                            ShowAuthenticating();//Pop Up
+                            final Timer t = new Timer();
+                            t.schedule(new TimerTask() {
+                                public void run() {
+                                     // when the task active then close the dialog
+                                    startActivity(new Intent("com.example.gal.shotafim.MenuActivity"));
+                                    t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+                                }
+                            }, 3500);
                         }
                         else {
                             Toast.makeText(LoginActivity.this,"Email or password is incorrect,try again!",Toast.LENGTH_LONG).show();
@@ -127,22 +136,20 @@ public class LoginActivity extends AppCompatActivity  {
     /*
     This method is for create popup windows after press login.
      */
-    private void ShowAuthencating(){
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-//                                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
+    private void ShowAuthenticating(){
+        ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setTitle("Login");
+        dialog.setMessage("Authenticating . . .");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                dialog.dismiss(); // when the task active then close the dialog
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 3000); // after 5 second (or 5000 milliseconds), the task will be active.
     }
 
     private void setGroupHolderCard(User user){

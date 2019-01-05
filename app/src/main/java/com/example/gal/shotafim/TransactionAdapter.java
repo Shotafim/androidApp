@@ -18,6 +18,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
     }
 
 
+
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
         View listItemView = convertView;
@@ -38,7 +39,6 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         dealTypeTxt.setText(currentTransaction.getmType());
         amountTxt.setText(Double.toString(currentTransaction.getmAmount()));
         dealDateTxt.setText(currentTransaction.getmDate());
-
 
         return listItemView;
     }

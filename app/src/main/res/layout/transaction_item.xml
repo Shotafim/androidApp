@@ -3,37 +3,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="16dp"
-    android:paddingLeft="16dp">
+    android:paddingRight="5dp"
+    android:paddingLeft="5dp">
 
     <TextView
         android:id="@+id/usr_initiator"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
         android:text="Mark"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/deal_type"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="9dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
         android:layout_toRightOf="@id/usr_initiator"
         android:text="Transfer" />
 
     <TextView
         android:id="@+id/receiver"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="28dp"
+        android:layout_marginLeft="5dp"
+        android:textAlignment="center"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="5dp"
         android:layout_toRightOf="@id/deal_type"
         android:text="to Gal"
         android:textStyle="bold" />
@@ -41,24 +43,26 @@
     <TextView
         android:id="@+id/deal_amount"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="87dp"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@id/receiver"
         android:text="100 shekel"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/deal_date"
-        android:layout_width="66dp"
-        android:textSize="11dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="-60dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_toRightOf="@id/deal_amount" />
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@id/deal_amount"
+        android:text="deal date"
+        android:textSize="11sp" />
 
 
 </RelativeLayout>

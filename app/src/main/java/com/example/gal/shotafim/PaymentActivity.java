@@ -1,5 +1,11 @@
 package com.example.gal.shotafim;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.LongFunction;
+
+import static java.lang.Thread.sleep;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -47,7 +58,8 @@ public class PaymentActivity extends AppCompatActivity {
     private User sendUser = null;
     //
     final private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
+    //Pop up
+    private ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +129,15 @@ public class PaymentActivity extends AppCompatActivity {
                                     TransRef.child("Payments").child(Generator.nextSessionId()).setValue(p);
                                 }
                                 //Make Toast
+                                showLoadingPopUp();
+                                try {
+                                    sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 Toast.makeText(PaymentActivity.this,"Payment Success!",Toast.LENGTH_LONG).show();
+
+                                switchToMenu();
                             }
                             else{
                                 Toast.makeText(PaymentActivity.this,"Something went wrong,try again!",Toast.LENGTH_LONG).show();
@@ -153,6 +173,51 @@ public class PaymentActivity extends AppCompatActivity {
         }
         return SettingLib.PAYMENT_STR;
     }
+
+    /**
+     * Switch to menu after X seconds.
+     * By default it's 1000 milliseconds(1 seconds).
+     */
+    private void switchToMenu(){
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                Intent MenuActivity = new Intent(PaymentActivity.this, MenuActivity.class);
+                startActivity(MenuActivity);
+                t.cancel();
+            }
+        }, 5000);
+    }
+
+    /**
+     * show loading pop up
+     * @return
+     */
+    private void showLoadingPopUp(){
+
+        dialog=new ProgressDialog(PaymentActivity.this);
+        dialog.setTitle("Transaction");
+        dialog.setMessage("Processing . . .");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+//                dialog.dismiss(); // when the task active then close the dialog
+                runOnUiThread(changeMessage);
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 3000); // after 5 second (or 5000 milliseconds), the task will be active.
+
+    }
+    private Runnable changeMessage = new Runnable() {
+        @Override
+        public void run() {
+            //Log.v(TAG, strCharacters);
+            dialog.setMessage("Success ! ! !");
+        }
+    };
     private void changeReceiverCredit(){
         final DatabaseReference usersRef = database.child("Users").child(search_item.getmName());
         usersRef.child("credit").addListenerForSingleValueEvent(new ValueEventListener() {
