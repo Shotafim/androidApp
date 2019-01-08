@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity  {
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SettingLib.HideKeyboard(LoginActivity.this);
                 usrNameTxtString = usrNameTxt.getText().toString();
                 passTxtString = passTxt.getText().toString();
                 FirebaseAuth mAuth;

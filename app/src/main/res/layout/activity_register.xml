@@ -184,12 +184,18 @@
 
             <Button
                 android:id="@+id/signUpBtn"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="127dp"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_toEndOf="@+id/main_linearForm"
-                android:text="Sign up" />
+                android:background="@color/colorAccent"
+                android:text="Sign up"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
 
         </LinearLayout>

@@ -1,6 +1,9 @@
 package com.example.gal.shotafim;
 
 
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,11 +41,10 @@ public class SettingLib {
     static final int PAYMENT = 1;
     static final String TRANSFER_STR = "TRANSFER";
     static final String PAYMENT_STR = "PAYMENT";
-
-
-
-
-
+    /**
+     * Group details
+     */
+    public static boolean checkOnlyOnce = true;
 
     /**
      * Firebase
@@ -76,5 +78,16 @@ public class SettingLib {
         firebaseDataRef.child(path).removeValue();
     }
 
+    /**
+     * Function to hide the keyboard
+     * @param activity
+     */
+    public static void HideKeyboard(android.app.Activity activity){
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 }

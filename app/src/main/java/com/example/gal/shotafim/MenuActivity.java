@@ -19,13 +19,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MenuActivity extends AppCompatActivity {
     private ImageButton personalAreaBtn;
     private ImageButton groupHistoryBtn;
     private ImageButton transactionBtn;
 
     //temp flag // TODO: Make the initGroupMembers each x time - to check if someone left the group or joined.
-    private boolean checkOnlyOnce = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,9 @@ public class MenuActivity extends AppCompatActivity {
 
 
         //init Group members
-        if(checkOnlyOnce){
+        if(SettingLib.checkOnlyOnce){
             GroupHolder.initGroupMembers();
-            checkOnlyOnce = false;
+            SettingLib.checkOnlyOnce = false;
         }
 
         personalAreaBtn.setOnClickListener(new View.OnClickListener() {

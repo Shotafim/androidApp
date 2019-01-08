@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +91,7 @@ public class PaymentActivity extends AppCompatActivity {
                     Toast.makeText(PaymentActivity.this,"There is empty field,try again!",Toast.LENGTH_LONG).show();
                 }
                 else{
+                    SettingLib.HideKeyboard(PaymentActivity.this);
                     User user = AuthenticatedUserHolder.instance.getAppUser();
                     String mtype = getTypeFromSearchItem(search_item);
                     double mamount = Double.parseDouble(amountTxt.getText().toString());
@@ -130,14 +132,9 @@ public class PaymentActivity extends AppCompatActivity {
                                 }
                                 //Make Toast
                                 showLoadingPopUp();
-                                try {
-                                    sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                Toast.makeText(PaymentActivity.this,"Payment Success!",Toast.LENGTH_LONG).show();
+//                                Toast.makeText(PaymentActivity.this,"Payment Success!",Toast.LENGTH_LONG).show();
 
-                                switchToMenu();
+//                                switchToMenu();
                             }
                             else{
                                 Toast.makeText(PaymentActivity.this,"Something went wrong,try again!",Toast.LENGTH_LONG).show();
@@ -216,6 +213,14 @@ public class PaymentActivity extends AppCompatActivity {
         public void run() {
             //Log.v(TAG, strCharacters);
             dialog.setMessage("Success ! ! !");
+            final Timer t = new Timer();
+            t.schedule(new TimerTask() {
+                public void run() {
+                    dialog.dismiss(); // when the task active then close the dialog
+                    t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+                }
+            }, 1000);
+
         }
     };
     private void changeReceiverCredit(){
